@@ -19,12 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class, webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CompanyControllerIntegrationTest {
-
-    @Autowired
-    private TestRestTemplate testRestTemplate;
+public class CompanyControllerIntegrationTest extends IntegrationTest {
 
     @Autowired
     private CompanyRepository companyRepository;
@@ -48,7 +43,7 @@ public class CompanyControllerIntegrationTest {
         final String SEARCH_NAME = "Company";
         final int RESULTS_COUNT = 3;
 
-        ResponseEntity<List> entity = this.testRestTemplate.getForEntity(
+        ResponseEntity<List> entity = getTestRestTemplate().getForEntity(
                 "/companies?name={name}", List.class, SEARCH_NAME);
 
         Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
@@ -62,7 +57,7 @@ public class CompanyControllerIntegrationTest {
     public void testSearchCompaniesByEmptyName() {
         final int RESULTS_COUNT = 3;
 
-        ResponseEntity<List> entity = this.testRestTemplate.getForEntity(
+        ResponseEntity<List> entity = getTestRestTemplate().getForEntity(
                 "/companies", List.class);
 
         Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
@@ -77,7 +72,7 @@ public class CompanyControllerIntegrationTest {
         final String SEARCH_NAME = "Company 1";
         final int RESULTS_COUNT = 1;
 
-        ResponseEntity<List> entity = this.testRestTemplate.getForEntity(
+        ResponseEntity<List> entity = getTestRestTemplate().getForEntity(
                 "/companies?name={name}", List.class, SEARCH_NAME);
 
         Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
