@@ -49,7 +49,7 @@ public class CompanyControllerIntegrationTest {
         final int RESULTS_COUNT = 3;
 
         ResponseEntity<List> entity = this.testRestTemplate.getForEntity(
-                "/search?name={name}", List.class, SEARCH_NAME);
+                "/companies?name={name}", List.class, SEARCH_NAME);
 
         Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
         Assert.assertEquals(MediaType.APPLICATION_JSON_UTF8, entity.getHeaders().getContentType());
@@ -63,7 +63,7 @@ public class CompanyControllerIntegrationTest {
         final int RESULTS_COUNT = 3;
 
         ResponseEntity<List> entity = this.testRestTemplate.getForEntity(
-                "/search", List.class);
+                "/companies", List.class);
 
         Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
         Assert.assertEquals(MediaType.APPLICATION_JSON_UTF8, entity.getHeaders().getContentType());
@@ -78,7 +78,7 @@ public class CompanyControllerIntegrationTest {
         final int RESULTS_COUNT = 1;
 
         ResponseEntity<List> entity = this.testRestTemplate.getForEntity(
-                "/search?name={name}", List.class, SEARCH_NAME);
+                "/companies?name={name}", List.class, SEARCH_NAME);
 
         Assert.assertEquals(HttpStatus.OK, entity.getStatusCode());
         Assert.assertEquals(MediaType.APPLICATION_JSON_UTF8, entity.getHeaders().getContentType());
