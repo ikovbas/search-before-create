@@ -16,7 +16,7 @@ public class CompanyController {
     @Autowired
     private CompanyService companyService;
 
-    @RequestMapping(value="/companies", method= RequestMethod.GET)
+    @RequestMapping(value="/companies", method=RequestMethod.GET)
     List<Company> findCompanies(@RequestParam(value="name", required=false) String name) {
 
         return companyService.findCompanyByName(name);

@@ -1,12 +1,7 @@
 package com.kovbas.search_before_create.entity;
 
-import javax.persistence.*;
-
-@Entity
 public class Company {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     private String name;
@@ -32,7 +27,8 @@ public class Company {
      * @param name
      * @param description
      */
-    public Company(String name, String description) {
+    public Company(Long id, String name, String description) {
+        setId(id);
         setName(name);
         setDescription(description);
     }
@@ -59,5 +55,10 @@ public class Company {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Company[id=%d, name='%s']", id, name);
     }
 }
