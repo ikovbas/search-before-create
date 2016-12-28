@@ -2,46 +2,35 @@ package com.kovbas.search_before_create;
 
 import com.kovbas.search_before_create.entity.Company;
 import com.kovbas.search_before_create.repository.CompanyRepository;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static org.mockito.BDDMockito.*;
+
 public class CompanyControllerIntegrationTest extends IntegrationTest {
 
-    @Autowired
+    @MockBean
     private CompanyRepository companyRepository;
-
-    @Before
-    public void setup() {
-        companyRepository.save(Arrays.asList(
-                new Company("Company 1", "Description of Company 1"),
-                new Company("Company 2", "Description of Company 2"),
-                new Company("Company 3", "Description of Company 3")
-        ));
-    }
-
-    @After
-    public void tearDown() {
-        companyRepository.deleteAll();
-    }
 
     @Test
     public void testSearchCompaniesByName() {
-        final String SEARCH_NAME = "Company";
+        final String SEARCH_NAME = "Сompany";
         final int RESULTS_COUNT = 3;
+
+        // Mock Company repository
+        given(companyRepository.findByNameLikeIgnoreCase("%" + SEARCH_NAME + "%")).willReturn(Arrays.asList(
+                new Company((long)1, "Company 1", "Description of Company 1"),
+                new Company((long)2, "Company 2", "Description of Company 2"),
+                new Company((long)3, "Company 3", "Description of Company 3")
+        ));
 
         ResponseEntity<List> entity = getTestRestTemplate().getForEntity(
                 "/companies?name={name}", List.class, SEARCH_NAME);
@@ -57,6 +46,13 @@ public class CompanyControllerIntegrationTest extends IntegrationTest {
     public void testSearchCompaniesByEmptyName() {
         final int RESULTS_COUNT = 3;
 
+        // Mock Company repository
+        given(companyRepository.findByNameLikeIgnoreCase("%%")).willReturn(Arrays.asList(
+                new Company((long)1, "Company 1", "Description of Company 1"),
+                new Company((long)2, "Company 2", "Description of Company 2"),
+                new Company((long)3, "Company 3", "Description of Company 3")
+        ));
+
         ResponseEntity<List> entity = getTestRestTemplate().getForEntity(
                 "/companies", List.class);
 
@@ -71,6 +67,11 @@ public class CompanyControllerIntegrationTest extends IntegrationTest {
     public void testSearchCompanyBySpecificName() {
         final String SEARCH_NAME = "Company 1";
         final int RESULTS_COUNT = 1;
+
+        // Mock Company repository
+        given(companyRepository.findByNameLikeIgnoreCase("%" + SEARCH_NAME + "%")).willReturn(Arrays.asList(
+                new Company((long)1, "Company 1", "Description of Company 1")
+        ));
 
         ResponseEntity<List> entity = getTestRestTemplate().getForEntity(
                 "/companies?name={name}", List.class, SEARCH_NAME);
