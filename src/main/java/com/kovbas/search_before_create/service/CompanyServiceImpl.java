@@ -16,7 +16,6 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public List<Company> findCompanyByName(String name) {
         name = name == null ? "" : name;
-        name = "%" + name + "%";
         return companyRepository.findByNameLikeIgnoreCase(name);
     }
 }

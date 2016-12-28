@@ -26,7 +26,7 @@ public class CompanyControllerIntegrationTest extends IntegrationTest {
         final int RESULTS_COUNT = 3;
 
         // Mock Company repository
-        given(companyRepository.findByNameLikeIgnoreCase("%" + SEARCH_NAME + "%")).willReturn(Arrays.asList(
+        given(companyRepository.findByNameLikeIgnoreCase(SEARCH_NAME)).willReturn(Arrays.asList(
                 new Company((long)1, "Company 1", "Description of Company 1"),
                 new Company((long)2, "Company 2", "Description of Company 2"),
                 new Company((long)3, "Company 3", "Description of Company 3")
@@ -47,7 +47,7 @@ public class CompanyControllerIntegrationTest extends IntegrationTest {
         final int RESULTS_COUNT = 3;
 
         // Mock Company repository
-        given(companyRepository.findByNameLikeIgnoreCase("%%")).willReturn(Arrays.asList(
+        given(companyRepository.findByNameLikeIgnoreCase("")).willReturn(Arrays.asList(
                 new Company((long)1, "Company 1", "Description of Company 1"),
                 new Company((long)2, "Company 2", "Description of Company 2"),
                 new Company((long)3, "Company 3", "Description of Company 3")
@@ -69,7 +69,7 @@ public class CompanyControllerIntegrationTest extends IntegrationTest {
         final int RESULTS_COUNT = 1;
 
         // Mock Company repository
-        given(companyRepository.findByNameLikeIgnoreCase("%" + SEARCH_NAME + "%")).willReturn(Arrays.asList(
+        given(companyRepository.findByNameLikeIgnoreCase(SEARCH_NAME)).willReturn(Arrays.asList(
                 new Company((long)1, "Company 1", "Description of Company 1")
         ));
 

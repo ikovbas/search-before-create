@@ -11,9 +11,16 @@ public class CompanyRepositoryImpl extends BaseRepositoryImpl<Company, Long> imp
     @Override
     public List<Company> findByNameLikeIgnoreCase(String name) {
 
-        return getJdbcTemplate().query(
-                "SELECT id, name, description FROM companies WHERE LOWER(name) LIKE LOWER(?)",
-                new Object[]{name},
+        final String query =
+                "WITH t AS (" +
+                    "SELECT *, levenshtein(name, ?) AS distance " +
+                    "FROM companies " +
+                    "ORDER BY distance " +
+                    "LIMIT 10" +
+                ")" +
+                "SELECT * FROM t WHERE distance <= 3";
+
+        return getJdbcTemplate().query(query, new Object[]{name},
                 (rs, rowNum) -> new Company(
                         rs.getLong("id"),
                         rs.getString("name"),
