@@ -13,12 +13,9 @@ public class CompanyRepositoryImpl extends BaseRepositoryImpl<Company, Long> imp
 
         final String query =
                 "WITH t AS (" +
-                    "SELECT *, levenshtein(name, ?) AS distance " +
-                    "FROM companies " +
-                    "ORDER BY distance " +
-                    "LIMIT 10" +
+                    "SELECT *, levenshtein(name, ?) AS distance FROM companies " +
                 ")" +
-                "SELECT * FROM t WHERE distance <= 3";
+                "SELECT * FROM t WHERE distance <= 3 ORDER BY distance LIMIT 10";
 
         return getJdbcTemplate().query(query, new Object[]{name},
                 (rs, rowNum) -> new Company(
